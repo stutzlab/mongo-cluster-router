@@ -8,7 +8,7 @@ services:
     environment:
       - CONFIG_REPLICA_SET=replica-set1
       - CONFIG_SERVER_NODES=configsrv1,configsrv2,configsrv3
-      - SHARD_NAME_PREFIX=shard
+      - SHARD_REPLICA_SET_PREFIX=shard
       - SHARD_1_NODES=shard1-a,shard1-b
       - SHARD_2_NODES=shard2-a,shard2-b
     ports:

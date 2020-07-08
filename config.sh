@@ -4,7 +4,7 @@ echo "Generating router config"
 echo ""
 rm /init-router.js
 for i in {1..100}; do 
-    SHARD_NAME="${SHARD_NAME_PREFIX}$i"
+    SHARD_REPLICA_SET_NAME="${SHARD_REPLICA_SET_PREFIX}$i"
     var="SHARD_${i}_NODES"
     SNODES="${!var}"
 
@@ -13,10 +13,10 @@ for i in {1..100}; do
     fi
     IFS=',' read -r -a NODES <<< "$SNODES"
     S=""
-    echo "Shard ${SHARD_NAME} nodes:"
+    echo "Shard ${SHARD_REPLICA_SET_NAME} nodes:"
     for N in "${NODES[@]}"; do
         echo "    - $N"
-        echo "sh.addShard(\"$SHARD_NAME/$N:27017\")" >> /init-router.js
+        echo "sh.addShard(\"$SHARD_REPLICA_SET_NAME/$N:27017\")" >> /init-router.js
         CONFIGDB="${CONFIGDB}${S}$N:27017"
         S=","
     done

@@ -3,6 +3,11 @@
 set -e
 # set -x
 
+if [ "$CONFIG_SERVER_NODES" == "" ]; then
+    echo "CONFIG_SERVER_NODES is required"
+    exit 1
+fi
+
 /config.sh &
 
 IFS=',' read -r -a NODES <<< "$CONFIG_SERVER_NODES"
