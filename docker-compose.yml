@@ -6,18 +6,28 @@ services:
     build: .
     image: stutzlab/mongo-cluster-router
     environment:
-      - CONFIG_REPLICA_SET=replica-set1
-      - CONFIG_SERVER_NODES=configsrv1,configsrv2,configsrv3
-      - SHARD_REPLICA_SET_PREFIX=shard
-      - SHARD_1_NODES=shard1-a,shard1-b
-      - SHARD_2_NODES=shard2-a,shard2-b
+      - CONFIG_REPLICA_SET=configset1
+      - CONFIG_SERVER_NODES=configsrv1
+      - ADD_SHARD_REPLICA_SET_PREFIX=shard
+      - ADD_SHARD_1_NODES=shard1a
+      - ADD_SHARD_2_NODES=shard2a
     ports:
-      - 27311:27017
+      - 27017:27017
 
   configsrv1:
     image: stutzlab/mongo-cluster-configsrv
     environment:
-      - CONFIG_REPLICA_SET=replica-set1
-      - CONFIG_SERVER_NODES=configsrv1,configsrv2,configsrv3
-    ports:
-      - 27311:27017
+      - CONFIG_REPLICA_SET=configset1
+      - INIT_CONFIG_NODES=configsrv1
+
+  shard1a:
+    image: stutzlab/mongo-cluster-shard
+    environment:
+      - SHARD_REPLICA_SET=shard1
+      - INIT_SHARD_NODES=shard1a
+
+  shard2a:
+    image: stutzlab/mongo-cluster-shard
+    environment:
+      - SHARD_REPLICA_SET=shard2
+      - INIT_SHARD_NODES=shard2a
