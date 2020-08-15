@@ -1,6 +1,6 @@
-FROM mongo:4.2.8-bionic
+FROM mongo:4.4.0-bionic
 
-RUN apt-get update && apt-get install -y netcat
+RUN apt-get update && apt-get install -y netcat inetutils-ping
 
 ENV CONFIG_REPLICA_SET 'configset1'
 ENV CONFIG_SERVER_NODES ''
@@ -12,7 +12,7 @@ ADD /startup.sh /
 ADD /health.sh /
 ADD /config.sh /
 
-HEALTHCHECK --start-period=30s --retries=3 CMD [ "/health.sh" ]
+HEALTHCHECK --start-period=15s --retries=3 CMD [ "/health.sh" ]
 
 EXPOSE 27017
 
