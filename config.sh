@@ -19,12 +19,15 @@ for i in {1..100}; do
     S=""
     echo "Shard ${SHARD_REPLICA_SET_NAME} nodes:"
     for N in "${NODES[@]}"; do
-        echo "    - $N"
+        echo ">>> Node $N"
         echo "sh.addShard(\"$SHARD_REPLICA_SET_NAME/$N:27017\")" >> /addshards.js
         CONFIGDB="${CONFIGDB}${S}$N:27017"
         S=","
-        echo "    - Waiting for host $N to be available..."
+        echo " - Waiting for host $N to be available..."
         until ping -c1 $N >/dev/null; do sleep 2; done
+        echo " - Host available. Waiting port 27017..."
+        while ! nc -z $N 27017; do sleep 1; done
+        echo " - Host $N OK"
     done
 done
 echo ""
