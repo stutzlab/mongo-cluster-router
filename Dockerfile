@@ -1,4 +1,4 @@
-FROM mongo:4.4.0-bionic
+FROM mongo:4.2.8-bionic
 
 RUN apt-get update && apt-get install -y netcat
 
