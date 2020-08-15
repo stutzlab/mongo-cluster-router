@@ -4,10 +4,7 @@ function deepCheck() {
     #check for shard status
     R=$(echo 'sh.status().ok' | mongo localhost:27017/test --quiet)
     echo $R | grep 1
-    if [ "$?" == "0" ]; then
-        return 0
-    fi
-    return 1
+    return $?
 }
 
 set -e
