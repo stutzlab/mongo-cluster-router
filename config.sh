@@ -25,7 +25,6 @@ for i in {1..100}; do
         S=","
         echo "    - Waiting for host $N to be available..."
         until ping -c1 $N >/dev/null; do sleep 2; done
-        while ! nc -z $N 27017; do sleep 1; done
     done
 done
 echo ""
