@@ -19,6 +19,6 @@ for N in "${NODES[@]}"; do
     S=","
 done
 
-echo "Starting Mongo router..."
+echo ">>> Starting Mongo router..."
 mongos --port 27017 --configdb $CONFIG_REPLICA_SET/$CONFIGDB --bind_ip_all
 

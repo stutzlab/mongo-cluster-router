@@ -2,6 +2,7 @@
 
 echo "Waiting for local server to be available at 27017..."
 while ! nc -z 127.0.0.1 27017; do sleep 0.5; done
+echo "Mongo OK"
 sleep 1
 
 echo "Generating router config"

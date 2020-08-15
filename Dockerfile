@@ -12,7 +12,7 @@ ADD /startup.sh /
 ADD /health.sh /
 ADD /config.sh /
 
-HEALTHCHECK --start-period=15s --retries=3 CMD [ "/health.sh" ]
+HEALTHCHECK CMD [ "/health.sh" ]
 
 EXPOSE 27017
 
