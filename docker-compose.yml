@@ -9,12 +9,12 @@ services:
       - CONFIG_REPLICA_SET=configset1
       - CONFIG_SERVER_NODES=configsrv1
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/admin_password
+      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/root_password
       - ADD_SHARD_REPLICA_SET_PREFIX=shard
       - ADD_SHARD_1_NODES=shard1a
       - ADD_SHARD_2_NODES=shard2a
     secrets:
-      - admin_password
+      - root_password
     ports:
       - 27017:27017
 
@@ -37,5 +37,5 @@ services:
       - INIT_SHARD_NODES=shard2a
 
 secrets:
-  admin_password:
+  root_password:
     file: ./sample_password
