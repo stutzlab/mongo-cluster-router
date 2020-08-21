@@ -7,8 +7,8 @@ sleep 1
 
 if [ "$MONGO_INITDB_ROOT_USERNAME" != "" ]; then
 
-    echo "db.getUser('admin')" | mongo 127.0.0.1/admin
-    if [ "$?" == 0 ]; then
+    echo "db.getUser('admin')" | mongo 127.0.0.1/admin | grep null
+    if [ "$?" == 1 ]; then
         echo "Root user already exists. Updating password"
 
 tee "/updateuser.js" > /dev/null <<EOF
@@ -20,7 +20,10 @@ db.updateUser( "$MONGO_INITDB_ROOT_USERNAME", {
             )
 EOF
 
+        set -e
+        echo /updateuser.js
         mongo < /updateuser.js
+        set +e
         echo "ROOT USER UPDATED"
 
     else
@@ -34,9 +37,12 @@ db.createUser( { user: "$MONGO_INITDB_ROOT_USERNAME",
             )
 EOT
 
+        set -e
+        echo /createuser.js
         mongo < /createuser.js
+        set +e
         echo "ROOT USER CREATED"
-        
+
     fi
 fi
 
