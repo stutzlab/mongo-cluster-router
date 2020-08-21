@@ -5,6 +5,42 @@ while ! nc -z 127.0.0.1 27017; do sleep 0.5; done
 echo "Mongo OK"
 sleep 1
 
+if [ "$MONGO_INITDB_ROOT_USERNAME" != "" ]; then
+
+    echo "db.getUser('admin')" | mongo 127.0.0.1/admin
+    if [ "$?" == 0 ]; then
+        echo "Root user already exists. Updating password"
+
+tee "/updateuser.js" > /dev/null <<EOF
+use admin
+db.updateUser( "$MONGO_INITDB_ROOT_USERNAME", {
+                pwd: "$(cat $MONGO_INITDB_ROOT_PASSWORD_FILE)",
+                roles: [ { role: "root", db: "admin" } ] 
+                }
+            )
+EOF
+
+        mongo < /updateuser.js
+        echo "ROOT USER UPDATED"
+
+    else
+
+tee "/createuser.js" > /dev/null <<EOT
+use admin
+db.createUser( { user: "$MONGO_INITDB_ROOT_USERNAME",
+                pwd: "$(cat $MONGO_INITDB_ROOT_PASSWORD_FILE)",
+                roles: [ { role: "root", db: "admin" } ] 
+                }
+            )
+EOT
+
+        mongo < /createuser.js
+        echo "ROOT USER CREATED"
+        
+    fi
+fi
+
+
 echo "Generating router config"
 echo ""
 rm /init-addshards.js
@@ -40,5 +76,5 @@ cat /addshards.js
 
 echo "ADDING SHARDS TO CLUSTER..."
 mongo < /addshards.js
-echo ">>> SHARDS ADDED SUCCESSFULLY"
+echo ">>> SHARDS ADDED"
 
