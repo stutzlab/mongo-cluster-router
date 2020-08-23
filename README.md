@@ -13,3 +13,6 @@ This is meant to be used along with [http://github.com/stutzlab/mongo-cluster-co
 * SHARD_NODES_1 - shard instances associated with this shard group''. required
 ENV SHARD_NODES_2 ''
 ENV SHARD_NODES_3 ''
+* ROOT_USERNAME - root username. defaults '' which means no user will be created
+* ROOT_PASSWORD_SECRET - root docker secret containing password
+* SHARED_KEY_SECRET - secret name with shared key. defaults to '', which will run with no keyfile

@@ -8,13 +8,15 @@ services:
     environment:
       - CONFIG_REPLICA_SET=configset1
       - CONFIG_SERVER_NODES=configsrv1
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD_FILE=/run/secrets/root_password
+      - SHARED_KEY_SECRET=mongo_sharedkey
       - ADD_SHARD_REPLICA_SET_PREFIX=shard
       - ADD_SHARD_1_NODES=shard1a
       - ADD_SHARD_2_NODES=shard2a
+      - ROOT_USERNAME=admin
+      - ROOT_PASSWORD_SECRET=root_password
     secrets:
       - root_password
+      - mongo_sharedkey
     ports:
       - 27017:27017
 
@@ -23,19 +25,31 @@ services:
     environment:
       - CONFIG_REPLICA_SET=configset1
       - INIT_CONFIG_NODES=configsrv1
+      - SHARED_KEY_SECRET=mongo_sharedkey
+    secrets:
+      - mongo_sharedkey
 
   shard1a:
     image: stutzlab/mongo-cluster-shard
     environment:
       - SHARD_REPLICA_SET=shard1
       - INIT_SHARD_NODES=shard1a
+      - SHARED_KEY_SECRET=mongo_sharedkey
+    secrets:
+      - mongo_sharedkey
 
   shard2a:
     image: stutzlab/mongo-cluster-shard
     environment:
       - SHARD_REPLICA_SET=shard2
       - INIT_SHARD_NODES=shard2a
+      - SHARED_KEY_SECRET=mongo_sharedkey
+    secrets:
+      - mongo_sharedkey
 
 secrets:
   root_password:
     file: ./sample_password
+  mongo_sharedkey:
+    file: ./sample_sharedkey
+
