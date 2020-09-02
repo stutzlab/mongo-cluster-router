@@ -42,7 +42,9 @@ cat /addshards.js
 
 echo "ADDING SHARDS TO CLUSTER..."
 if [ "$ROOT_USERNAME" != "" ]; then
-  mongo mongodb://$ROOT_USERNAME:$(cat $PASSWORD_FILE)@localhost:27017 < /addshards.js
+  PASSWORD_FILE="/run/secrets/$ROOT_PASSWORD_SECRET"
+  PASS=$(cat $PASSWORD_FILE)
+  mongo mongodb://$ROOT_USERNAME:$PASS@localhost:27017 < /addshards.js
 else
   mongo < /addshards.js
 fi
